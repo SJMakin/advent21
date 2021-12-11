@@ -1,11 +1,57 @@
 package main
 
-import "fmt"
-import "strings"
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
 
-func main() {
-    input:=`189
+func day1() {
+
+	strings := strings.Split(day1input, "\n")
+	//=> []string{"156", "100", "713"}
+
+	// Now we can convert the strings to ints
+
+	ints := make([]int, len(strings))
+
+	// Task 1.
+	result1 := 0
+	prev1 := 999999999
+
+	// Task 2.
+	result2 := 0
+	const depth = 3
+	var scan [depth]int
+	var prev2 = 9999999999
+	for i, s := range strings {
+		ints[i], _ = strconv.Atoi(s)
+
+		// Task 1.
+		if ints[i] > prev1 {
+			result1 = result1 + 1
+		}
+
+		prev1 = ints[i]
+
+		// Task 2.
+		scan[i%depth] = ints[i]
+		if i > 1 {
+			s := sum(scan)
+			if s > prev2 {
+				result2 = result2 + 1
+			}
+
+			prev2 = s
+		}
+
+	}
+	fmt.Printf("Day One! \n")
+	fmt.Printf("Result 1: %v\n", result1)
+	fmt.Printf("Result 2: %v\n", result2)
+}
+
+const day1input string = `189
 190
 199
 197
@@ -2005,55 +2051,3 @@ func main() {
 6627
 6629
 6624`
-
-
-
-strings := strings.Split(input, "\n")
-//=> []string{"156", "100", "713"}
-
-// Now we can convert the strings to ints
-
-ints := make([]int, len(strings))
-
-// Task 1.
-result1 := 0
-prev1 := 999999999
-
-// Task 2.
-result2 := 0
-const depth = 3
-var scan [depth]int
-var prev2 = 9999999999
-for i, s := range strings {
-    ints[i], _ = strconv.Atoi(s)
-    
-    // Task 1.
-    if ints[i] > prev1 {
-        result1 = result1 + 1
-    }
-    
-    prev1 = ints[i]
-    
-    // Task 2.
-    scan[i % depth] = ints[i]
-    if (i > 1){
-        s := sum(scan)
-        if s > prev2 {
-        result2 = result2 + 1
-        }
-    
-        prev2 = s
-    }
-    
-}
-    fmt.Printf("Result 1: %v\n", result1)
-    fmt.Printf("Result 2: %v\n", result2)
-}
-
-func sum(array [3]int) int {  
- result := 0  
- for _, v := range array {  
-  result += v  
- }  
- return result  
-}  
